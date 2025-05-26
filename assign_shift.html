@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Shift to Employee</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        // Set today's date as the minimum date for the date picker
+        window.onload = function () {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById("assignment_date").setAttribute("min", today);
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Assign Shift to Employee</h1>
+        
+        <!-- Form to assign shift to employee -->
+        <form action="/assign_shift" method="POST">
+            <label for="employee">Select Employee:</label>
+            <select id="employee" name="employee_id" required>
+                {% for employee in employees %}
+                    <option value="{{ employee }}">{{ employee }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="shift">Select Shift:</label>
+            <select id="shift" name="shift_id" required>
+                {% for shift in shifts %}
+                    <option value="{{ loop.index }}">
+                        {{ shift['type'] }} | {{ shift['start'] }} to {{ shift['end'] }}
+                    </option>
+                {% endfor %}
+            </select><br><br>
+
+            <label for="assignment_date">Assignment Date:</label>
+            <input type="date" id="assignment_date" name="assignment_date" required><br><br>
+
+            <button type="submit">Assign Shift</button>
+        </form>
+
+        <br>
+        <a href="{{ url_for('admin_dashboard') }}">Back to Admin Dashboard</a>
+    </div>
+</body>
+</html>
